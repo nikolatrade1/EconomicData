@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="js/swiss.js" defer></script>
+    <title>Switzerland Economic Data</title>
+    <link rel="stylesheet" href="css/proba.css">
+    <style>
+        
+        .positive {
+            color: green;
+        }
+        .negative {
+            color: red;
+        }
+        .arrow {
+            display: inline-block;
+            margin-left: 10px;
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<h2 onclick="toggleTable(this)">Economic Growth <span class="arrow">⬇</span></h2>
+<table id="growthTable-sw">
+    <thead>
+        <tr>
+            <th>Indicator</th>
+            <th>Previous</th>
+            <th>Actual</th>
+            <th>Forecast</th>
+            <th>Difference</th>
+            <th>Next Meeting</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th>GDP Growth QoQ</th>
+            <td><input type="text" id="gdp-previous-sw" value=""></td>
+            <td><input type="text" id="gdp-actual-sw" value="" oninput="calculateDifference('gdp', 'sw')"></td>
+            <td><input type="text" id="gdp-forecast-sw" value="" oninput="calculateDifference('gdp', 'sw')"></td>
+            <td id="gdp-difference-sw">0%</td>
+            <td><input type="date" id="gdp-date-sw" oninput="highlightThisWeek('sw', 'gdp')"></td>
+        </tr>
+        <tr>
+            <th>Retail Sales</th>
+            <td><input type="text" id="retail-sales-previous-sw" value=""></td>
+            <td><input type="text" id="retail-sales-actual-sw" value="" oninput="calculateDifference('retail-sales', 'sw')"></td>
+            <td><input type="text" id="retail-sales-forecast-sw" value="" oninput="calculateDifference('retail-sales', 'sw')"></td>
+            <td id="retail-sales-difference-sw">0%</td>
+            <td><input type="date" id="retail-sales-date-sw" oninput="highlightThisWeek('sw', 'retail-sales')"></td>
+        </tr>
+    </tbody>
+</table>
+
+<h2 onclick="toggleTable(this)">Labour Market <span class="arrow">⬇</span></h2>
+<table id="labourTable-sw">
+    <thead>
+        <tr>
+            <th>Indicator</th>
+            <th>Previous</th>
+            <th>Actual</th>
+            <th>Forecast</th>
+            <th>Difference</th>
+            <th>Next Meeting</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th>Unemployment Rate</th>
+            <td><input type="text" id="unemployment-rate-previous-sw" value=""></td>
+            <td><input type="text" id="unemployment-rate-actual-sw" value="" oninput="calculateDifference('unemployment-rate', 'sw')"></td>
+            <td><input type="text" id="unemployment-rate-forecast-sw" value="" oninput="calculateDifference('unemployment-rate', 'sw')"></td>
+            <td id="unemployment-rate-difference-sw">0%</td>
+            <td><input type="date" id="unemployment-rate-date-sw" oninput="highlightThisWeek('sw', 'unemployment-rate')"></td>
+        </tr>
+    </tbody>
+</table>
+
+<h2 onclick="toggleTable(this)">Inflation Data <span class="arrow">⬇</span></h2>
+<table id="inflationTable-sw">
+    <thead>
+        <tr>
+            <th>Indicator</th>
+            <th>Previous</th>
+            <th>Actual</th>
+            <th>Forecast</th>
+            <th>Difference</th>
+            <th>Next Meeting</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th>CPI YoY</th>
+            <td><input type="text" id="cpi-yoy-previous-sw" value=""></td>
+            <td><input type="text" id="cpi-yoy-actual-sw" value="" oninput="calculateDifference('cpi-yoy', 'sw')"></td>
+            <td><input type="text" id="cpi-yoy-forecast-sw" value="" oninput="calculateDifference('cpi-yoy', 'sw')"></td>
+            <td id="cpi-yoy-difference-sw">0%</td>
+            <td><input type="date" id="cpi-yoy-date-sw" oninput="highlightThisWeek('sw', 'cpi-yoy')"></td>
+        </tr>
+        <tr>
+            <th>CPI MoM</th>
+            <td><input type="text" id="cpi-mom-previous-sw" value=""></td>
+            <td><input type="text" id="cpi-mom-actual-sw" value="" oninput="calculateDifference('cpi-mom', 'sw')"></td>
+            <td><input type="text" id="cpi-mom-forecast-sw" value="" oninput="calculateDifference('cpi-mom', 'sw')"></td>
+            <td id="cpi-mom-difference-sw">0%</td>
+            <td><input type="date" id="cpi-mom-date-sw" oninput="highlightThisWeek('sw', 'cpi-mom')"></td>
+        </tr>
+        <tr>
+            <th>Interest Rate</th>
+            <td><input type="text" id="interest-previous-sw" value="4,0%"></td>
+            <td><input type="text" id="interest-actual-sw" value="4,2%" oninput="calculateDifference('interest', 'sw')"></td>
+            <td><input type="text" id="interest-forecast-sw" value="4,0%" oninput="calculateDifference('interest', 'sw')"></td>
+            <td id="interest-difference-sw">0,2%</td>
+            <td><input type="date" id="interest-date-sw" value="2024-11-14" oninput="highlightThisWeek('sw', 'interest')"></td>
+        </tr>
+    </tbody>
+</table>
+
+<button class="save-button" onclick="saveEconomicData()">Save Economic Data</button>
+
+<div class="drzave">
+    <button onclick="window.location.href='us.html'" class="america-btn"><img class="drzave-slike" src="slike/united-states.png" alt=""></button>
+    <p class="tekst america">America</p>
+    
+    <button class="europe-btn" onclick="window.location.href='eu.html'"><img class="drzave-slike" src="slike/european-union.png" alt=""></button>
+    <p class="tekst europe">Europe</p>
+    
+    <button class="japan-btn" onclick="window.location.href='japan.html'"><img class="drzave-slike" src="slike/japan.png" alt=""></button>
+    <p class="tekst japan">Japan</p>
+    
+    <button class="uk-btn" onclick="window.location.href='uk.html'"><img class="drzave-slike" src="slike/united-kingdom.png" alt=""></button>
+    <p class="tekst uk">United Kingdom</p>
+    
+    <button id="current-page" class="swiss-btn" onclick="window.location.href='swiss.html'"> <img class="drzave-slike" src="slike/switzerland.png" alt=""></button>
+    <p class="tekst swiss">Switzerland</p>
+    
+    <button class="australia-btn" onclick="window.location.href='australia.html'"><img class="drzave-slike" src="slike/australia.png" alt=""></button>
+    <p class="tekst australia">Australia</p>
+    
+    <button class="newzealand-btn" onclick="window.location.href='newzealand.html'"> <img class="drzave-slike" src="slike/new-zealand.png" alt=""></button>
+    <p class="tekst newzealand">New Zealand</p>
+
+    <button class="chart-btn" onclick="window.location.href='charts-proba.html'"> <img class="drzave-slike" src="slike/database.png" alt=""></button>
+        <p class="tekst chart">Chart</p>
+    
+</div>
+
+</body>
+</html>

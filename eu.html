@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EU Economic Data</title>
+    <script src="js/eu.js"></script>
+    <link rel="stylesheet" href="css/proba.css">
+    <style>
+        
+        .positive {
+            color: green;
+        }
+        .negative {
+            color: red;
+        }
+        .arrow {
+            display: inline-block;
+            margin-left: 10px;
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <h2 onclick="toggleTable(this)">Economic Growth <span class="arrow">⬇</span></h2>
+<table>
+    <thead>
+        <tr>
+            <td></td>
+            <th>Previous</th>
+            <th>Actual</th>
+            <th>Forecast</th>
+            <th>Difference</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th>GDP Growth</th>
+            <td><input type="   text" id="gdp-previous-eu" value=""></td>
+            <td><input type="text" id="gdp-actual-eu" value="" oninput="calculateDifference('gdp', 'eu')"></td>
+            <td><input type="text" id="gdp-forecast-eu" value="" oninput="calculateDifference('gdp', 'eu')"></td>
+            <td id="gdp-difference-eu">0%</td>
+            <td><input type="date" id="gdp-date-eu" oninput="highlightThisWeek('eu', 'gdp')"></td>
+        </tr>
+        <tr>
+            <th>German Services PMI</th>
+            <td><input type="text" id="pmi-services-previous-de" value=""></td>
+            <td><input type="text" id="pmi-services-actual-de" value="" oninput="calculateDifference('pmi-services', 'de')"></td>
+            <td><input type="text" id="pmi-services-forecast-de" value="" oninput="calculateDifference('pmi-services', 'de')"></td>
+            <td id="pmi-services-difference-de">0%</td>
+            <td><input type="date" id="pmi-services-date-de" oninput="highlightThisWeek('de', 'pmi-services')"></td>
+        </tr>
+        <tr>
+            <th>French Services PMI</th>
+            <td><input type="text" id="pmi-services-previous-fr" value=""></td>
+            <td><input type="text" id="pmi-services-actual-fr" value="" oninput="calculateDifference('pmi-services', 'fr')"></td>
+            <td><input type="text" id="pmi-services-forecast-fr" value="" oninput="calculateDifference('pmi-services', 'fr')"></td>
+            <td id="pmi-services-difference-fr">0%</td>
+            <td><input type="date" id="pmi-services-date-fr" oninput="highlightThisWeek('fr', 'pmi-services')"></td>
+        </tr>
+        <tr>
+            <th>German Manufacturing PMI</th>
+            <td><input type="text" id="pmi-manufacturing-previous-de" value=""></td>
+            <td><input type="text" id="pmi-manufacturing-actual-de" value="" oninput="calculateDifference('pmi-manufacturing', 'de')"></td>
+            <td><input type="text" id="pmi-manufacturing-forecast-de" value="" oninput="calculateDifference('pmi-manufacturing', 'de')"></td>
+            <td id="pmi-manufacturing-difference-de">0%</td>
+            <td><input type="date" id="pmi-manufacturing-date-de" oninput="highlightThisWeek('de', 'pmi-manufacturing')"></td>
+        </tr>
+        <tr>
+            <th>French Manufacturing PMI</th>
+            <td><input type="text" id="pmi-manufacturing-previous-fr" value=""></td>
+            <td><input type="text" id="pmi-manufacturing-actual-fr" value="" oninput="calculateDifference('pmi-manufacturing', 'fr')"></td>
+            <td><input type="text" id="pmi-manufacturing-forecast-fr" value="" oninput="calculateDifference('pmi-manufacturing', 'fr')"></td>
+            <td id="pmi-manufacturing-difference-fr">0%</td>
+            <td><input type="date" id="pmi-manufacturing-date-fr" oninput="highlightThisWeek('fr', 'pmi-manufacturing')"></td>
+        </tr>
+        <tr>
+            <th>Retail Sales</th>
+            <td><input type="text" id="retail-sales-previous-eu" value=""></td>
+            <td><input type="text" id="retail-sales-actual-eu" value="" oninput="calculateDifference('retail-sales', 'eu')"></td>
+            <td><input type="text" id="retail-sales-forecast-eu" value="" oninput="calculateDifference('retail-sales', 'eu')"></td>
+            <td id="retail-sales-difference-eu">0%</td>
+            <td><input type="date" id="retail-sales-date-eu" oninput="highlightThisWeek('eu', 'retail-sales')"></td>
+        </tr>
+        <tr>
+            <th>German's GDP</th>
+            <td><input type="text" id="GeGDP-previous-eu" value=""></td>
+            <td><input type="text" id="GeGDP-actual-eu" value="" oninput="calculateDifference('GeGDP', 'eu')"></td>
+            <td><input type="text" id="GeGDP-forecast-eu" value="" oninput="calculateDifference('GeGDP', 'eu')"></td>
+            <td id="GeGDP-difference-eu">0%</td>
+            <td><input type="date" id="GeGDP-date-eu" oninput="highlightThisWeek('eu', 'GeGDP')"></td>
+        </tr>
+        
+    </tbody>
+</table>
+<h2 onclick="toggleTable(this)">Labour Market<span class="arrow">⬇</span></h2>
+<table>
+    <thead>
+        <tr>
+            <td></td>
+            <th>Previous</th>
+            <th>Actual</th>
+            <th>Forecast</th>
+            <th>Difference</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+    <tr>
+        <th>Unemployment Rate</th>
+        <td><input type="text" id="unemployment-previous-eu" value=""></td>
+        <td><input type="text" id="unemployment-actual-eu" value="" oninput="calculateDifference('unemployment', 'eu')"></td>
+        <td><input type="text" id="unemployment-forecast-eu" value="" oninput="calculateDifference('unemployment', 'eu')"></td>
+        <td id="unemployment-difference-eu">0%</td>
+        <td><input type="date" id="unemployment-date-eu" oninput="highlightThisWeek('eu', 'unemployment')"></td>
+    </tr>
+</table>
+
+<h2 onclick="toggleTable(this)">Inflation data<span class="arrow">⬇</span></h2>
+<table>
+    <thead>
+        <tr>
+            <td></td>
+            <th>Previous</th>
+            <th>Actual</th>
+            <th>Forecast</th>
+            <th>Difference</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+    <tr>
+        <th>Interest Rate</th>
+        <td><input type="text" id="interest-previous-eu" value=""></td>
+        <td><input type="text" id="interest-actual-eu" value="" oninput="calculateDifference('interest', 'eu')"></td>
+        <td><input type="text" id="interest-forecast-eu" value="" oninput="calculateDifference('interest', 'eu')"></td>
+        <td id="interest-difference-eu">0%</td>
+        <td><input type="date" id="interest-date-eu" oninput="highlightThisWeek('eu', 'interest')"></td>
+    </tr>
+    <tr>
+        <th>CPI y/y</th>
+        <td><input type="text" id="cpi-previous-eu" value=""></td>
+        <td><input type="text" id="cpi-actual-eu" value="" oninput="calculateDifference('cpi', 'eu')"></td>
+        <td><input type="text" id="cpi-forecast-eu" value="" oninput="calculateDifference('cpi', 'eu')"></td>
+        <td id="cpi-difference-eu">0%</td>
+        <td><input type="date" id="cpi-date-eu" oninput="highlightThisWeek('eu', 'cpi')"></td>
+    </tr>
+    <tr>
+        <th>CPI MoM</th>
+        <td><input type="text" id="cpi-mom-previous-eu" value=""></td>
+        <td><input type="text" id="cpi-mom-actual-eu" value="" oninput="calculateDifference('cpi-mom', 'eu')"></td>
+        <td><input type="text" id="cpi-mom-forecast-eu" value="" oninput="calculateDifference('cpi-mom', 'eu')"></td>
+        <td id="cpi-mom-difference-eu">0%</td>
+        <td><input type="date" id="cpi-mom-date-eu" oninput="highlightThisWeek('eu', 'cpi-mom')"></td>
+    </tr>
+    <tr>
+        <th><a href="https://tradingeconomics.com/germany/inflation-cpi" target="_blank">Germany Inflation Rate</a></th>
+        <td><input type="text" id="germany-inflation-previous-eu" value=""></td>
+        <td><input type="text" id="germany-inflation-actual-eu" value="" oninput="calculateDifference('germany-inflation', 'eu')"></td>
+        <td><input type="text" id="germany-inflation-forecast-eu" value="" oninput="calculateDifference('germany-inflation', 'eu')"></td>
+        <td id="germany-inflation-difference-eu">0%</td>
+        <td><input type="date" id="germany-inflation-date-eu" oninput="highlightThisWeek('eu', 'germany-inflation')"></td>
+    </tr>
+    <tr>
+        <th>German's ZEW</th>
+        <td><input type="text" id="GeZEW-previous-eu" value=""></td>
+        <td><input type="text" id="GeZEW-actual-eu" value="" oninput="calculateDifference('GeZEW', 'eu')"></td>
+        <td><input type="text" id="GeZEW-forecast-eu" value="" oninput="calculateDifference('GeZEW', 'eu')"></td>
+        <td id="GeZEW-difference-eu">0%</td>
+        <td><input type="date" id="GeZEW-date-eu" oninput="highlightThisWeek('eu', 'GeZEW')"></td>
+    </tr>
+
+        
+</table>
+
+<button class="save-button" onclick="saveEconomicData('eu')">Save Economic Data</button>
+
+<div class="drzave">
+    <button onclick="window.location.href='us.html'" class="america-btn"><img class="drzave-slike" src="slike/united-states.png" alt=""></button>
+    <p class="tekst america">America</p>
+    
+    <button id="current-page" class="europe-btn" onclick="window.location.href='eu.html'"><img class="drzave-slike" src="slike/european-union.png" alt=""></button>
+    <p class="tekst europe">Europe</p>
+    
+    <button class="japan-btn" onclick="window.location.href='japan.html'"><img class="drzave-slike" src="slike/japan.png" alt=""></button>
+    <p class="tekst japan">Japan</p>
+    
+    <button class="uk-btn" onclick="window.location.href='uk.html'"><img class="drzave-slike" src="slike/united-kingdom.png" alt=""></button>
+    <p class="tekst uk">United Kingdom</p>
+    
+    <button class="swiss-btn" onclick="window.location.href='swiss.html'"> <img class="drzave-slike" src="slike/switzerland.png" alt=""></button>
+    <p class="tekst swiss">Switzerland</p>
+    
+    <button class="australia-btn" onclick="window.location.href='australia.html'"><img class="drzave-slike" src="slike/australia.png" alt=""></button>
+    <p class="tekst australia">Australia</p>
+    
+    <button class="newzealand-btn" onclick="window.location.href='newzealand.html'"> <img class="drzave-slike" src="slike/new-zealand.png" alt=""></button>
+    <p class="tekst newzealand">New Zealand</p>
+
+    <button class="chart-btn" onclick="window.location.href='charts-proba.html'"> <img class="drzave-slike" src="slike/database.png" alt=""></button>
+        <p class="tekst chart">Chart</p>
+    
+</div>
+
+</body>
+</html>

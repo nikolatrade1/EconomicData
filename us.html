@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="js/us.js"></script>
+    <title>US Economic Data</title>
+    <link rel="stylesheet" href="css/proba.css">
+
+    <style>
+        .positive {
+            color: green;
+        }
+        .negative {
+            color: red;
+        }
+        .arrow {
+            display: inline-block;
+            margin-left: 10px;
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <h2 onclick="toggleTable(this)">Economic Growth <span class="arrow">⬇</span></h2>
+    <table>
+        <thead>
+            <tr>
+                <td></td>
+                <th>Previous</th>
+                <th>Actual</th>
+                <th>Forecast</th>
+                <th>Difference</th>
+                <th>Next Meeting</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th class="clickable" onclick="window.open('https://www.forexfactory.com/calendar/27-us-prelim-gdp-qq', '_blank')">GDP Growth</th>
+                <td><input type="text" id="gdp-previous-us" value=""></td>
+                <td><input type="text" id="gdp-actual-us" value="write" oninput="calculateDifference('gdp', 'us')"></td>
+                <td><input type="text" id="gdp-forecast-us" value="3%" oninput="calculateDifference('gdp', 'us')"></td>
+                <td id="gdp-difference-us">-0,2%</td>
+                <td><input type="date" id="gdp-date-us" oninput="highlightThisWeek('us', 'gdp')"></td>
+            </tr>
+            <tr>
+                <th class="clickable" onclick="window.open('https://www.forexfactory.com/calendar/253-us-ism-services-pmi', '_blank')">Services PMI</th>
+                <td><input type="text" id="pmi-services-previous-us" value="51.5"></td>
+                <td><input type="text" id="pmi-services-actual-us" value="54,9" oninput="calculateDifference('pmi-services', 'us')"></td>
+                <td><input type="text" id="pmi-services-forecast-us" value="51,7" oninput="calculateDifference('pmi-services', 'us')"></td>
+                <td id="pmi-services-difference-us">3,2</td>
+                <td><input type="date" id="pmi-services-date-us" oninput="highlightThisWeek('us', 'pmi-services')"></td>
+            </tr>
+            <tr>
+                <th class="clickable" onclick="window.open('https://www.forexfactory.com/calendar/252-us-ism-manufacturing-pmi', '_blank')">Manufacturing PMI</th>
+                <td><input type="text" id="pmi-manufacturing-previous-us" value="47,2"></td>
+                <td><input type="text" id="pmi-manufacturing-actual-us" value="47,2" oninput="calculateDifference('pmi-manufacturing', 'us')"></td>
+                <td><input type="text" id="pmi-manufacturing-forecast-us" value="47,6" oninput="calculateDifference('pmi-manufacturing', 'us')"></td>
+                <td id="pmi-manufacturing-difference-us">-0,4</td>
+                <td><input type="date" id="pmi-manufacturing-date-us" oninput="highlightThisWeek('us', 'pmi-manufacturing')"></td>
+            </tr>
+            <tr>
+                <th class="clickable" onclick="window.open('https://www.forexfactory.com/calendar/102-us-retail-sales-mm', '_blank')">Retail Sales</th>
+                <td><input type="text" id="retail-sales-previous-us" value="0,20"></td>
+                <td><input type="text" id="retail-sales-actual-us" value="0,5" oninput="calculateDifference('retail-sales', 'us')"></td>
+                <td><input type="text" id="retail-sales-forecast-us" value="0,1" oninput="calculateDifference('retail-sales', 'us')"></td>
+                <td id="retail-sales-difference-us">0,4</td>
+                <td><input type="date" id="retail-sales-date-us" oninput="highlightThisWeek('us', 'retail-sales')"></td>
+            </tr>
+            <tr>
+                <th class="clickable" onclick="window.open('https://www.forexfactory.com/calendar/208-us-cb-consumer-confidence', '_blank')">CB Consumer Confidence</th>
+                <td><input type="text" id="consumer-confidence-previous-us" value="99,2"></td>
+                <td><input type="text" id="consumer-confidence-actual-us" value="108,70" oninput="calculateDifference('consumer-confidence', 'us')"></td>
+                <td><input type="text" id="consumer-confidence-forecast-us" value="99,50" oninput="calculateDifference('consumer-confidence', 'us')"></td>
+                <td id="consumer-confidence-difference-us">9,2</td>
+                <td><input type="date" id="consumer-confidence-date-us" oninput="highlightThisWeek('us', 'consumer-confidence')"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2 onclick="toggleTable(this)">Labour Market<span class="arrow">⬇</span></h2>
+    <table>
+        <thead>
+            <tr>
+                <td></td>
+                <th>Previous</th>
+                <th>Actual</th>
+                <th>Forecast</th>
+                <th>Difference</th>
+                <th>Next Meeting</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th class="clickable" onclick="window.open('https://www.forexfactory.com/calendar/66-us-non-farm-employment-change', '_blank')">NFP (k)</th>
+                <td><input type="text" id="nfp-previous-us" value="159k"></td>
+                <td><input type="text" id="nfp-actual-us" value="254,00" oninput="calculateDifference('nfp', 'us')"></td>
+                <td><input type="text" id="nfp-forecast-us" value="147,00" oninput="calculateDifference('nfp', 'us')"></td>
+                <td id="nfp-difference-us">107,00</td>
+                <td><input type="date" id="nfp-date-us" oninput="highlightThisWeek('us', 'nfp')"></td>
+            </tr>
+            <tr>
+                <th class="clickable" onclick="window.open('https://www.forexfactory.com/calendar/66-us-non-farm-employment-change', '_blank')">ADP</th>
+                <td><input type="text" id="adp-previous-us" value="159"></td>
+                <td><input type="text" id="adp-actual-us" value="233" oninput="calculateDifference('adp', 'us')"></td>
+                <td><input type="text" id="adp-forecast-us" value="115" oninput="calculateDifference('adp', 'us')"></td>
+                <td id="adp-difference-us">118,00</td>
+                <td><input type="date" id="adp-date-us" oninput="highlightThisWeek('us', 'adp')"></td>
+            </tr>
+            <tr>
+                <th class="clickable" onclick="window.open('https://www.forexfactory.com/calendar/11-us-unemployment-claims', '_blank')">Unemployment Claims</th>
+                <td><input type="text" id="unemployment-claims-previous-us" value="228"></td>
+                <td><input type="text" id="unemployment-claims-actual-us" value="216,00" oninput="calculateDifference('unemployment-claims', 'us')"></td>
+                <td><input type="text" id="unemployment-claims-forecast-us" value="229,00" oninput="calculateDifference('unemployment-claims', 'us')"></td>
+                <td id="unemployment-claims-difference-us">-13</td>
+                <td><input type="date" id="unemployment-claims-date-us" oninput="highlightThisWeek('us', 'unemployment-claims')"></td>
+            </tr>
+            <tr>
+                <th class="clickable" onclick="window.open('https://www.forexfactory.com/calendar/1643-us-unemployment-rate', '_blank')">Unemployment Rate</th>
+                <td><input type="text" id="unemployment-rate-previous-us" value="4.2%"></td>
+                <td><input type="text" id="unemployment-rate-actual-us" value="3,8%" oninput="calculateDifference('unemployment-rate', 'us')"></td>
+                <td><input type="text" id="unemployment-rate-forecast-us" value="3,9%" oninput="calculateDifference('unemployment-rate', 'us')"></td>
+                <td id="unemployment-rate-difference-us">-0,1%</td>
+                <td><input type="date" id="unemployment-rate-date-us" oninput="highlightThisWeek('us', 'unemployment')"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2 onclick="toggleTable(this)">Inflation Data<span class="arrow">⬇</span></h2>
+    <table>
+        <thead>
+            <tr>
+                <td></td>
+                <th>Previous</th>
+                <th>Actual</th>
+                <th>Forecast</th>
+                <th>Difference</th>
+                <th>Next Meeting</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th class="clickable" onclick="window.open('https://www.forexfactory.com/calendar/266-us-cpi', '_blank')">CPI y/y</th>
+                <td><input type="text" id="cpi-previous-us" value="3.2%"></td>
+                <td><input type="text" id="cpi-actual-us" value="3,5%" oninput="calculateDifference('cpi', 'us')"></td>
+                <td><input type="text" id="cpi-forecast-us" value="3%" oninput="calculateDifference('cpi', 'us')"></td>
+                <td id="cpi-difference-us">0,5%</td>
+                
+                <td><input type="date" id="cpi-date-us" oninput="highlightThisWeek('us', 'cpi')"></td>
+            </tr>
+            <tr>
+                <th class="clickable" onclick="window.open('https://www.forexfactory.com/calendar/78-us-cpi-mm', '_blank')">CPI MoM</th>
+                <td><input type="text" id="cpi-m/m-previous-us" value="0,1%"></td>
+                <td><input type="text" id="cpi-m/m-actual-us" value="0,2%" oninput="calculateDifference('cpi-m/m', 'us')"></td>
+                <td><input type="text" id="cpi-m/m-forecast-us" value="0,2%" oninput="calculateDifference('cpi-m/m', 'us')"></td>
+                <td id="cpi-m/m-difference-us">0,0%</td>
+                
+                <td><input type="date" id="cpi-m/m-date-us" value="2024-11-13" oninput="highlightThisWeek('us', 'cpi-m/m')"></td>
+            </tr>
+            <tr>
+                <th class="clickable" onclick="window.open('https://www.forexfactory.com/calendar/1843-us-pce-price-index', '_blank')">PCE</th>
+                <td><input type="text" id="pce-previous-us" value="3,0%"></td>
+                <td><input type="text" id="pce-actual-us" value="3,4%" oninput="calculateDifference('pce', 'us')"></td>
+                <td><input type="text" id="pce-forecast-us" value="2,8%" oninput="calculateDifference('pce', 'us')"></td>
+                <td id="pce-difference-us">0,6%</td>
+                <td><input type="date" id="pce-date-us" oninput="highlightThisWeek('us', 'pce')"></td>
+            </tr>
+            <tr>
+                <th class="clickable" onclick="window.open('https://www.forexfactory.com/calendar/86-us-ppi-mm', '_blank')">PPI MoM</th>
+                <td><input type="text" id="ppi-m/m-previous-us" value="0,1%"></td>
+                <td><input type="text" id="ppi-m/m-actual-us" value="0,3%" oninput="calculateDifference('ppi-m/m', 'us')"></td>
+                <td><input type="text" id="ppi-m/m-forecast-us" value="0,0%" oninput="calculateDifference('ppi-m/m', 'us')"></td>
+                <td id="ppi-m/m-difference-us">0,1%</td>
+                
+                <td><input type="date" id="ppi-m/m-date-us" value="2024-11-14" oninput="highlightThisWeek('us', 'ppi-m/m')"></td>
+            </tr>
+            <tr>
+                <th class="clickable" onclick="window.open('https://www.forexfactory.com/calendar/86-us-interest-rate', '_blank')">Interest Rate</th>
+                <td><input type="text" id="interest-previous-us" value="4,0%"></td>
+                <td><input type="text" id="interest-actual-us" value="4,2%" oninput="calculateDifference('interest', 'us')"></td>
+                <td><input type="text" id="interest-forecast-us" value="4,0%" oninput="calculateDifference('interest', 'us')"></td>
+                <td id="interest-difference-us">0,2%</td>
+                
+                <td><input type="date" id="interest-date-us" value="2024-11-14" oninput="highlightThisWeek('us', 'interest')"></td>
+            </tr>
+            
+        </tbody>
+    </table>
+
+    <button class="save-button" onclick="saveEconomicData()">Save Meeting Data</button>
+
+    <div class="drzave">
+        <button id="current-page" class="america-btn"><img class="drzave-slike" src="slike/united-states.png" alt=""></button>
+        <p class="tekst america">America</p>
+        
+        <button class="europe-btn" onclick="window.location.href='eu.html'"><img class="drzave-slike" src="slike/european-union.png" alt=""></button>
+        <p class="tekst europe">Europe</p>
+        
+        <button class="japan-btn" onclick="window.location.href='japan.html'"><img class="drzave-slike" src="slike/japan.png" alt=""></button>
+        <p class="tekst japan">Japan</p>
+        
+        <button class="uk-btn" onclick="window.location.href='uk.html'"><img class="drzave-slike" src="slike/united-kingdom.png" alt=""></button>
+        <p class="tekst uk">United Kingdom</p>
+        
+        <button class="swiss-btn" onclick="window.location.href='swiss.html'"> <img class="drzave-slike" src="slike/switzerland.png" alt=""></button>
+        <p class="tekst swiss">Switzerland</p>
+        
+        <button class="australia-btn" onclick="window.location.href='australia.html'"><img class="drzave-slike" src="slike/australia.png" alt=""></button>
+        <p class="tekst australia">Australia</p>
+        
+        <button class="newzealand-btn" onclick="window.location.href='newzealand.html'"> <img class="drzave-slike" src="slike/new-zealand.png" alt=""></button>
+        <p class="tekst newzealand">New Zealand</p>
+        
+        <button class="chart-btn" onclick="window.location.href='charts-proba.html'"> <img class="drzave-slike" src="slike/database.png" alt=""></button>
+        <p class="tekst chart">Chart</p>
+    </div>
+</body>
+</html>

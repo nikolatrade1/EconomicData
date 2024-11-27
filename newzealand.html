@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="js/newzealand.js" defer></script>
+    <title>New Zealand Economic Data</title>
+    <link rel="stylesheet" href="css/proba.css">
+    <style>
+        
+        .positive {
+            color: green;
+        }
+        .negative {
+            color: red;
+        }
+        .arrow {
+            display: inline-block;
+            margin-left: 10px;
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<h2 onclick="toggleTable(this)">Economic Growth <span class="arrow">⬇</span></h2>
+<table id="growthTable-nz">
+    <thead>
+        <tr>
+            <td></td>
+            <th>Previous</th>
+            <th>Actual</th>
+            <th>Forecast</th>
+            <th>Difference</th>
+            <th>Next Meeting</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th>GDP Growth</th>
+            <td><input type="text" id="gdp-previous-nz" value=""></td>
+            <td><input type="text" id="gdp-actual-nz" value="" oninput="calculateDifference('gdp', 'nz')"></td>
+            <td><input type="text" id="gdp-forecast-nz" value="" oninput="calculateDifference('gdp', 'nz')"></td>
+            <td id="gdp-difference-nz">0%</td>
+            <td><input type="date" id="gdp-date-nz" oninput="highlightThisWeek('nz', 'gdp')"></td>
+        </tr>
+        <tr>
+            <th>Retail Sales</th>
+            <td><input type="text" id="retail-sales-previous-nz" value=""></td>
+            <td><input type="text" id="retail-sales-actual-nz" value="" oninput="calculateDifference('retail-sales', 'nz')"></td>
+            <td><input type="text" id="retail-sales-forecast-nz" value="" oninput="calculateDifference('retail-sales', 'nz')"></td>
+            <td id="retail-sales-difference-nz">0%</td>
+            <td><input type="date" id="retail-sales-date-nz" oninput="highlightThisWeek('nz', 'retail-sales')"></td>
+        </tr>
+    </tbody>
+</table>
+
+<h2 onclick="toggleTable(this)">Labour Market <span class="arrow">⬇</span></h2>
+<table id="labourTable-nz">
+    <thead>
+        <tr>
+            <td></td>
+            <th>Previous</th>
+            <th>Actual</th>
+            <th>Forecast</th>
+            <th>Difference</th>
+            <th>Next Meeting</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th>Consumer Confidence</th>
+            <td><input type="text" id="consumer-confidence-previous-nz" value=""></td>
+            <td><input type="text" id="consumer-confidence-actual-nz" value="" oninput="calculateDifference('consumer-confidence', 'nz')"></td>
+            <td><input type="text" id="consumer-confidence-forecast-nz" value="" oninput="calculateDifference('consumer-confidence', 'nz')"></td>
+            <td id="consumer-confidence-difference-nz">0</td>
+            <td><input type="date" id="consumer-confidence-date-nz" oninput="highlightThisWeek('nz', 'consumer-confidence')"></td>
+        </tr>
+        <tr>
+            <th>Unemployment Rate</th>
+            <td><input type="text" id="unemployment-rate-previous-nz" value=""></td>
+            <td><input type="text" id="unemployment-rate-actual-nz" value="" oninput="calculateDifference('unemployment-rate', 'nz')"></td>
+            <td><input type="text" id="unemployment-rate-forecast-nz" value="" oninput="calculateDifference('unemployment-rate', 'nz')"></td>
+            <td id="unemployment-rate-difference-nz">0%</td>
+            <td><input type="date" id="unemployment-rate-date-nz" oninput="highlightThisWeek('nz', 'unemployment-rate')"></td>
+        </tr>
+        <tr>
+            <th>Employment Change QoQ</th>
+            <td><input type="text" id="employment-previous-nz" value=""></td>
+            <td><input type="text" id="employment-actual-nz" value="" oninput="calculateDifference('employment', 'nz')"></td>
+            <td><input type="text" id="employment-forecast-nz" value="" oninput="calculateDifference('employment', 'nz')"></td>
+            <td id="employment-difference-nz">0%</td>
+            <td><input type="date" id="employment-date-nz" oninput="highlightThisWeek('nz', 'employment')"></td>
+        </tr>
+    </tbody>
+</table>
+
+<h2 onclick="toggleTable(this)">Inflation Data <span class="arrow">⬇</span></h2>
+<table id="inflationTable-nz">
+    <thead>
+        <tr>
+            <td></td>
+            <th>Previous</th>
+            <th>Actual</th>
+            <th>Forecast</th>
+            <th>Difference</th>
+            <th>Next Meeting</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th>CPI YoY</th>
+            <td><input type="text" id="cpi-yoy-previous-nz" value=""></td>
+            <td><input type="text" id="cpi-yoy-actual-nz" value="" oninput="calculateDifference('cpi-yoy', 'nz')"></td>
+            <td><input type="text" id="cpi-yoy-forecast-nz" value="" oninput="calculateDifference('cpi-yoy', 'nz')"></td>
+            <td id="cpi-yoy-difference-nz">0%</td>
+            <td><input type="date" id="cpi-yoy-date-nz" oninput="highlightThisWeek('nz', 'cpi-yoy')"></td>
+        </tr>
+        <tr>
+            <th>CPI MoM</th>
+            <td><input type="text" id="cpi-mom-previous-nz" value=""></td>
+            <td><input type="text" id="cpi-mom-actual-nz" value="" oninput="calculateDifference('cpi-mom', 'nz')"></td>
+            <td><input type="text" id="cpi-mom-forecast-nz" value="" oninput="calculateDifference('cpi-mom', 'nz')"></td>
+            <td id="cpi-mom-difference-nz">0%</td>
+            <td><input type="date" id="cpi-mom-date-nz" oninput="highlightThisWeek('nz', 'cpi-mom')"></td>
+        </tr>
+        <tr>
+            <th>Interest Rate</th>
+            <td><input type="text" id="interest-previous-nz" value="4,0%"></td>
+            <td><input type="text" id="interest-actual-nz" value="4,2%" oninput="calculateDifference('interest', 'nz')"></td>
+            <td><input type="text" id="interest-forecast-nz" value="4,0%" oninput="calculateDifference('interest', 'nz')"></td>
+            <td id="interest-difference-nz">0,2%</td>
+            <td><input type="date" id="interest-date-nz" value="" oninput="highlightThisWeek('nz', 'interest')"></td>
+        </tr>
+    </tbody>
+</table>
+
+<button class="save-button" onclick="saveEconomicData()">Save Economic Data (Japan)</button>
+
+<div class="drzave">
+    <button onclick="window.location.href='us.html'" class="america-btn"><img class="drzave-slike" src="slike/united-states.png" alt=""></button>
+    <p class="tekst america">America</p>
+    
+    <button class="europe-btn" onclick="window.location.href='eu.html'"><img class="drzave-slike" src="slike/european-union.png" alt=""></button>
+    <p class="tekst europe">Europe</p>
+    
+    <button class="japan-btn" onclick="window.location.href='japan.html'"><img class="drzave-slike" src="slike/japan.png" alt=""></button>
+    <p class="tekst japan">Japan</p>
+    
+    <button class="uk-btn" onclick="window.location.href='uk.html'"><img class="drzave-slike" src="slike/united-kingdom.png" alt=""></button>
+    <p class="tekst uk">United Kingdom</p>
+    
+    <button class="swiss-btn" onclick="window.location.href='swiss.html'"> <img class="drzave-slike" src="slike/switzerland.png" alt=""></button>
+    <p class="tekst swiss">Switzerland</p>
+    
+    <button class="australia-btn" onclick="window.location.href='australia.html'"><img class="drzave-slike" src="slike/australia.png" alt=""></button>
+    <p class="tekst australia">Australia</p>
+    
+    <button id="current-page" class="newzealand-btn" onclick="window.location.href='newzealand.html'"> <img class="drzave-slike" src="slike/new-zealand.png" alt=""></button>
+    <p class="tekst newzealand">New Zealand</p>
+
+    <button class="chart-btn" onclick="window.location.href='charts-proba.html'"> <img class="drzave-slike" src="slike/database.png" alt=""></button>
+        <p class="tekst chart">Chart</p>
+    
+</div>
+
+</body>
+</html>

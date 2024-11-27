@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="js/japan.js" defer></script>
+    <title>Japan Economic Data</title>
+    <link rel="stylesheet" href="css/proba.css">
+    <style>
+        
+        .positive {
+            color: green;
+        }
+        .negative {
+            color: red;
+        }
+        .arrow {
+            display: inline-block;
+            margin-left: 10px;
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<h2 onclick="toggleTable(this)">Economic Growth <span class="arrow">⬇</span></h2>
+<table id="growthTable-jp">
+    <thead>
+        <tr>
+            <td></td>
+            <th>Previous</th>
+            <th>Actual</th>
+            <th>Forecast</th>
+            <th>Difference</th>
+            <th>Next Meeting</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th>GDP Growth</th>
+            <td><input type="text" id="gdp-previous-jp" value=""></td>
+            <td><input type="text" id="gdp-actual-jp" value="" oninput="calculateDifference('gdp', 'jp')"></td>
+            <td><input type="text" id="gdp-forecast-jp" value="" oninput="calculateDifference('gdp', 'jp')"></td>
+            <td id="gdp-difference-jp">0%</td>
+            <td><input type="date" id="gdp-date-jp" oninput="highlightThisWeek('jp', 'gdp')"></td>
+        </tr>
+        <tr>
+            <th>Retail Sales</th>
+            <td><input type="text" id="retail-sales-previous-jp" value=""></td>
+            <td><input type="text" id="retail-sales-actual-jp" value="" oninput="calculateDifference('retail-sales', 'jp')"></td>
+            <td><input type="text" id="retail-sales-forecast-jp" value="" oninput="calculateDifference('retail-sales', 'jp')"></td>
+            <td id="retail-sales-difference-jp">0%</td>
+            <td><input type="date" id="retail-sales-date-jp" oninput="highlightThisWeek('jp', 'retail-sales')" ></td>
+        </tr>
+    </tbody>
+</table>
+
+<h2 onclick="toggleTable(this)">Labour Market <span class="arrow">⬇</span></h2>
+<table id="labourTable-jp">
+    <thead>
+        <tr>
+            <td></td>
+            <th>Previous</th>
+            <th>Actual</th>
+            <th>Forecast</th>
+            <th>Difference</th>
+            <th>Next Meeting</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th>Consumer Confidence</th>
+            <td><input type="text" id="consumer-confidence-previous-jp" value=""></td>
+            <td><input type="text" id="consumer-confidence-actual-jp" value="" oninput="calculateDifference('consumer-confidence', 'jp')"></td>
+            <td><input type="text" id="consumer-confidence-forecast-jp" value="" oninput="calculateDifference('consumer-confidence', 'jp')"></td>
+            <td id="consumer-confidence-difference-jp">0</td>
+            <td><input type="date" id="consumer-confidence-date-jp" oninput="highlightThisWeek('jp', 'consumer-confidence')"></td>
+        </tr>
+        <tr>
+            <th>Unemployment Rate</th>
+            <td><input type="text" id="unemployment-rate-previous-jp" value=""></td>
+            <td><input type="text" id="unemployment-rate-actual-jp" value="" oninput="calculateDifference('unemployment-rate', 'jp')"></td>
+            <td><input type="text" id="unemployment-rate-forecast-jp" value="" oninput="calculateDifference('unemployment-rate', 'jp')"></td>
+            <td id="unemployment-rate-difference-jp">0%</td>
+            <td><input type="date" id="unemployment-rate-date-jp" oninput="highlightThisWeek('jp', 'unemployment-rate')"></td>
+        </tr>
+    </tbody>
+</table>
+
+<h2 onclick="toggleTable(this)">Inflation Data <span class="arrow">⬇</span></h2>
+<table id="inflationTable-jp">
+    <thead>
+        <tr>
+            <td></td>
+            <th>Previous</th>
+            <th>Actual</th>
+            <th>Forecast</th>
+            <th>Difference</th>
+            <th>Next Meeting</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th>CPI YoY</th>
+            <td><input type="text" id="cpi-yoy-previous-jp" value=""></td>
+            <td><input type="text" id="cpi-yoy-actual-jp" value="" oninput="calculateDifference('cpi-yoy', 'jp')"></td>
+            <td><input type="text" id="cpi-yoy-forecast-jp" value="" oninput="calculateDifference('cpi-yoy', 'jp')"></td>
+            <td id="cpi-yoy-difference-jp">0%</td>
+            <td><input type="date" id="cpi-yoy-date-jp" oninput="highlightThisWeek('jp', 'cpi-yoy')"></td>
+        </tr>
+        <tr>
+            <th>CPI MoM</th>
+            <td><input type="text" id="cpi-mom-previous-jp" value=""></td>
+            <td><input type="text" id="cpi-mom-actual-jp" value="" oninput="calculateDifference('cpi-mom', 'jp')"></td>
+            <td><input type="text" id="cpi-mom-forecast-jp" value="" oninput="calculateDifference('cpi-mom', 'jp')"></td>
+            <td id="cpi-mom-difference-jp">0%</td>
+            <td><input type="date" id="cpi-mom-date-jp" oninput="highlightThisWeek('jp', 'cpi-mom')"></td>
+        </tr>
+
+        <tr>
+            <th>Interest Rate</th>
+            <td><input type="text" id="interest-previous-jp" value="4,0%"></td>
+            <td><input type="text" id="interest-actual-jp" value="4,2%" oninput="calculateDifference('interest', 'jp')"></td>
+            <td><input type="text" id="interest-forecast-jp" value="4,0%" oninput="calculateDifference('interest', 'jp')"></td>
+            <td id="interest-difference-jp">0,2%</td>
+            <td><input type="date" id="interest-date-jp" value="" oninput="highlightThisWeek('jp', 'interest')"></td>
+        </tr>
+        
+    </tbody>
+</table>
+
+<button class="save-button" onclick="saveEconomicData()">Save Economic Data (Japan)</button>
+
+<div class="drzave">
+    <button onclick="window.location.href='us.html'" class="america-btn"><img class="drzave-slike" src="slike/united-states.png" alt=""></button>
+    <p class="tekst america">America</p>
+    
+    <button class="europe-btn" onclick="window.location.href='eu.html'"><img class="drzave-slike" src="slike/european-union.png" alt=""></button>
+    <p class="tekst europe">Europe</p>
+    
+    <button id="current-page" class="japan-btn" onclick="window.location.href='japan.html'"><img class="drzave-slike" src="slike/japan.png" alt=""></button>
+    <p class="tekst japan">Japan</p>
+    
+    <button class="uk-btn" onclick="window.location.href='uk.html'"><img class="drzave-slike" src="slike/united-kingdom.png" alt=""></button>
+    <p class="tekst uk">United Kingdom</p>
+    
+    <button class="swiss-btn" onclick="window.location.href='swiss.html'"> <img class="drzave-slike" src="slike/switzerland.png" alt=""></button>
+    <p class="tekst swiss">Switzerland</p>
+    
+    <button class="australia-btn" onclick="window.location.href='australia.html'"><img class="drzave-slike" src="slike/australia.png" alt=""></button>
+    <p class="tekst australia">Australia</p>
+    
+    <button class="newzealand-btn" onclick="window.location.href='newzealand.html'"> <img class="drzave-slike" src="slike/new-zealand.png" alt=""></button>
+    <p class="tekst newzealand">New Zealand</p>
+
+    <button class="chart-btn" onclick="window.location.href='charts-proba.html'"> <img class="drzave-slike" src="slike/database.png" alt=""></button>
+        <p class="tekst chart">Chart</p>
+    
+</div>
+
+</body>
+</html>

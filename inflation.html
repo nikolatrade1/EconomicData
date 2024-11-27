@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Global Inflation Data</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<style>
+    body{
+        background-color: whitesmoke;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: center;
+    }
+    th {
+        background-color: #f2f2f2;
+    }
+    #toggleArrow {
+    transition: transform 0.3s ease; /* Smooth rotation effect */
+    }
+    #inflationChart {
+        background-color: #ddd; /* Set the desired background color */
+    }
+
+    #tablesContainer {
+        margin-top: 20px;
+        display: none; /* Initially hide the tables */
+    }
+    
+.chart-btn{
+    position: relative;
+    bottom: -100px;
+    left: 40%;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 1px solid gray;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.inflation-btn{
+    position: relative;
+    bottom: -50px;
+    left: 50%;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 1px solid gray;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.chart-btn:hover {
+    transform: scale(1.1); /* Zoom effect */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3); /* Shadow effect */
+    cursor: pointer;
+}
+
+.inflation-btn:hover {
+    transform: scale(1.1); /* Zoom effect */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3); /* Shadow effect */
+    cursor: pointer;
+}
+
+.drzave-slike {
+    width: 40px;
+    height: 40px;
+}
+
+.tekst{
+    opacity: 0;
+    position: fixed;
+    background-color: gainsboro;
+    border-radius: 50%;
+    bottom: 90px;
+}
+
+
+.chart{
+    left: 39%;
+}
+
+.inflation{
+    left: 50.5%;
+}
+
+.chart-btn:hover + .chart {
+    opacity: 1; /* Prikazujemo tekst kad korisnik hoveruje preko slike */
+}
+
+.inflation-btn:hover + .inflation {
+    opacity: 1; /* Prikazujemo tekst kad korisnik hoveruje preko slike */
+}
+</style>
+</head>
+<body>
+<h2>Inflation Data Tables</h2><span id="toggleArrow" style="cursor: pointer; font-size: 24px;">⬇</span>
+
+<div id="tablesContainer" style="display: none;">
+
+    <!-- EU Inflation Table -->
+    <h3>EU Inflation</h3>
+    <table>
+    <thead>
+        <tr><th>History</th><th>Actual</th><th>Forecast</th></tr>
+    </thead>
+    <tbody>
+        <tr id="month1">
+            <td>Mar 2024</td><td class="actual">2.40%</td><td class="forecast">2.40%</td>
+        </tr>
+        <tr id="month2">
+            <td>Apr 2024</td><td class="actual">2.40%</td><td class="forecast">2.40%</td>
+        </tr>
+        <tr id="month3">
+            <td>May 2024</td><td class="actual">2.60%</td><td class="forecast">2.60%</td>
+        </tr>
+        <tr id="month4">
+            <td>Jun 2024</td><td class="actual">2.50%</td><td class="forecast">2.50%</td>
+        </tr>
+        <tr id="month5">
+            <td>Jul 2024</td><td class="actual">2.60%</td><td class="forecast">2.60%</td>
+        </tr>
+        <tr id="month6">
+            <td>Aug 2024</td><td class="actual">2.20%</td><td class="forecast">2.20%</td>
+        </tr>
+        <tr id="month7">
+            <td>Sep 2024</td><td class="actual">1.80%</td><td class="forecast">1.90%</td>
+        </tr>
+        <tr id="month8">
+            <td>Oct 2024</td><td class="actual">2.00%</td><td class="forecast">1.90%</td>
+        </tr>
+        <tr id="month9">
+            <td>Nov 2024</td><td class="actual"></td><td class="forecast">1.90%</td>
+        </tr>
+        <tr id="month10">
+            <td>Dec 2024</td><td class="actual"></td><td class="forecast">1.90%</td>
+        </tr>
+    </tbody>
+    </table>
+
+
+    <!-- UK Inflation Table -->
+    <h3>UK Inflation</h3>
+    <table>
+    <tr><th>History</th><th>Actual</th><th>Forecast</th><th>Previous</th></tr>
+    <tr><td>Mar 2024</td><td>3.40%</td><td>3.50%</td><td>4.00%</td></tr>
+    <tr><td>Apr 2024</td><td>3.20%</td><td>3.10%</td><td>3.40%</td></tr>
+    <tr><td>May 2024</td><td>2.30%</td><td>2.10%</td><td>3.20%</td></tr>
+    <tr><td>Jun 2024</td><td>2.00%</td><td>2.00%</td><td>2.30%</td></tr>
+    <tr><td>Jul 2024</td><td>2.00%</td><td>1.90%</td><td>2.00%</td></tr>
+    <tr><td>Aug 2024</td><td>2.20%</td><td>2.30%</td><td>2.00%</td></tr>
+    <tr><td>Sep 2024</td><td>2.20%</td><td>2.20%</td><td>2.20%</td></tr>
+    <tr><td>Oct 2024</td><td>1.70%</td><td>1.90%</td><td>2.20%</td></tr>
+    <tr><td>Nov 2024</td><td>2.6%</td><td>2.50%</td><td></td></tr>
+    <tr><td>Dec 2024</td><td></td><td>2.60%</td><td></td></tr>
+    </table>
+
+    <!-- US Inflation Table -->
+    <h3>US Inflation</h3>
+    <table>
+        <tr><th>History</th><th>Actual</th><th>Forecast</th></tr>
+        <tr><td>Mar 2024</td><td>3.20%</td><td>3.10%</td></tr>
+        <tr><td>Apr 2024</td><td>3.50%</td><td>3.40%</td></tr>
+        <tr><td>May 2024</td><td>3.40%</td><td>3.40%</td></tr>
+        <tr><td>Jun 2024</td><td>3.30%</td><td>3.40%</td></tr>
+        <tr><td>Jul 2024</td><td>3.00%</td><td>3.10%</td></tr>
+        <tr><td>Aug 2024</td><td>2.90%</td><td>3.00%</td></tr>
+        <tr><td>Sep 2024</td><td>2.50%</td><td>2.50%</td></tr>
+        <tr><td>Oct 2024</td><td>2.6%</td><td>2.60%</td></tr>
+        <tr><td>Nov 2024</td><td></td><td>2.60%</td></tr>
+        <tr><td>Dec 2024</td><td></td><td>2.60%</td></tr>
+    </table>
+
+    <!-- Japan Inflation Table -->
+    <h3>Japan Inflation</h3>
+    <table>
+        <tr><th>History</th><th>Actual</th><th>Forecast</th></tr>
+        <tr><td>Mar 2024</td><td>2.70%</td><td>2.80%</td></tr>
+        <tr><td>Apr 2024</td><td>2.50%</td><td>2.30%</td></tr>
+        <tr><td>May 2024</td><td>2.80%</td><td>2.50%</td></tr>
+        <tr><td>Jun 2024</td><td>2.80%</td><td>2.80%</td></tr>
+        <tr><td>Jul 2024</td><td>2.80%</td><td>2.90%</td></tr>
+        <tr><td>Aug 2024</td><td>3.00%</td><td>3.00%</td></tr>
+        <tr><td>Sep 2024</td><td>2.50%</td><td>2.70%</td></tr>
+        <tr><td>Oct 2024</td><td>2.50%</td><td>2.70%</td></tr>
+        <tr><td>Nov 2024</td><td></td><td>3.20%</td></tr>
+        <tr><td>Dec 2024</td><td></td><td>3.20%</td></tr>
+    </table>
+
+    <!-- Australia Inflation Table -->
+    <h3>Australia Inflation</h3>
+    <table>
+        <tr><th>History</th><th>Actual</th><th>Forecast</th></tr>
+        <tr><td>Mar 26, 2024</td><td>3.40%</td><td>3.50%</td></tr>
+        <tr><td>Apr 23, 2024</td><td>3.50%</td><td>3.40%</td></tr>
+        <tr><td>May 28, 2024</td><td>3.60%</td><td>3.40%</td></tr>
+        <tr><td>Jun 25, 2024</td><td>4.00%</td><td>3.80%</td></tr>
+        <tr><td>Jul 30, 2024</td><td>3.80%</td><td>3.80%</td></tr>
+        <tr><td>Aug 27, 2024</td><td>3.50%</td><td>3.40%</td></tr>
+        <tr><td>Sep 24, 2024</td><td>2.70%</td><td>2.70%</td></tr>
+        <tr><td>Oct 2024</td><td>2.10%</td><td>2.30%</td></tr>
+        <tr><td>Nov 2024</td><td></td><td>2.30%</td></tr>
+        <tr><td>Dec 2024</td><td></td><td>2.30%</td></tr>
+    </table>
+
+    <!-- New Zealand Inflation Table -->
+    <h3>New Zealand Inflation</h3>
+    <table>
+        <tr><th>History</th><th>Actual</th><th>Forecast</th></tr>
+        <tr><td>Mar 2024</td><td>4.00%</td><td>4.00%</td></tr>
+        <tr><td>Apr 2024</td><td>4.00%</td><td>4.00%</td></tr>
+        <tr><td>May 2024</td><td>4.00%</td><td>4.00%</td></tr>
+        <tr><td>Jun 2024</td><td>4.00%</td><td>4.00%</td></tr>
+        <tr><td>Jul 2024</td><td>3.30%</td><td>3.50%</td></tr>
+        <tr><td>Aug 2024</td><td>3.30%</td><td>3.50%</td></tr>
+        <tr><td>Sep 2024</td><td>3.30%</td><td>3.50%</td></tr>
+        <tr><td>Oct 2024</td><td>2.20%</td><td>2.20%</td></tr>
+        <tr><td>Nov 2024</td><td></td><td>2.20%</td></tr>
+        <tr><td>Dec 2024</td><td></td><td>2.20%</td></tr>
+    </table>
+</div>
+<!-- Inflation Chart -->
+<h2>Inflation Chart</h2>
+<canvas id="inflationChart" width="900px" height="300px"></canvas>
+
+
+<button class="chart-btn" onclick="window.location.href='charts-proba.html'"> <img class="drzave-slike" src="slike/database.png" alt=""></button>
+        <p class="tekst chart">Global Chart</p>
+
+<button class="inflation-btn" onclick="window.location.href='gdp.html'"> <img class="drzave-slike" src="slike/gdp.png" alt=""></button>
+<p class="tekst inflation">GDP</p>
+
+<script>
+// Chart Data
+const labels = ["Feb 2024" ,"Mar 2024" ,"Apr 2024", "May 2024", "Jun 2024", "Jul 2024", "Aug 2024", "Sep 2024", "Oct 2024", "Nov 2024"];
+const data = {
+    labels: labels,
+    datasets: [
+        {
+            label: "EU Actual",
+            data: [2.4, 2.4, 2.6, 2.5, 2.6, 2.2, 1.8, 2.0, null, null],
+            borderColor: "blue",
+            fill: false,
+            borderWidth: 2.5,
+            tension:0.4
+        },
+        {
+            label: "EU Forecast",
+            data: [2.4, 2.4, 2.6, 2.5, 2.6, 2.2, 1.9, 1.9, 1.9, 1.9],
+            borderColor: "rgb(138, 138, 255)",
+            fill: false,
+            borderWidth: 1.5,
+            tension:0.4
+        },
+        {
+            label: "US Actual",
+            data: [3.2, 3.5, 3.4, 3.3, 3.0, 2.9, 2.5, 2.6, null, null],
+            borderColor: "red",
+            fill: false,
+            borderWidth: 2.5,
+            tension:0.4
+        },
+        {
+            label: "US Forecast",
+            data: [3.1, 3.4, 3.4, 3.4, 3.1, 3.0, 2.5, 2.6, 2.5, 2.5],
+            borderColor: "rgb(255, 138, 138)",
+            fill: false,
+            borderWidth: 1.5,
+            tension:0.4
+        },
+        {
+            label: "UK Actual",
+            data: [3.4, 3.2, 2.3, 2.0, 2.0, 2.2, 2.2, 1.7, 2.6, null],
+            borderColor: "yellow",
+            fill: false,
+            borderWidth: 2.5,
+            tension:0.4
+        },
+        {
+            label: "UK Forecast",
+            data: [3.5, 3.1, 2.1, 2.0, 1.9, 2.3, 2.2, 1.9, 2.6, 2.6],
+            borderColor: "#eff779",
+            fill: false,
+            borderWidth: 1.5,
+            tension:0.4
+        },
+        {
+            label: "Japan Actual",
+            data: [2.7, 2.5, 2.8, 2.8, 2.8, 3.0, 2.5, 2.5, null, null],
+            borderColor: "green",
+            fill: false,
+            borderWidth: 2.5,
+            tension:0.4
+        },
+        {
+            label: "Japan Forecast",
+            data: [2.8, 2.3, 2.5, 2.8, 2.9, 3.0, 2.7, 2.7, 3.2, 3.2],
+            borderColor: "#7bf779",
+            fill: false,
+            borderWidth: 1.5,
+            tension:0.4
+        },
+        {
+            label: "Australia Actual QoQ",
+            data: [3.4, 3.5, 3.6, 4.0, 3.8, 3.5, 2.7, 2.1, null, null],
+            borderColor: "orange",
+            fill: false,
+            borderWidth: 2.5,
+            tension:0.4
+        },
+        {
+            label: "Australia Forecast",
+            data: [3.5, 3.4, 3.4, 3.8, 3.8, 3.4, 2.7, 2.3, 2.3, 2.3],
+            borderColor: "rgb(255, 198, 138)",
+            fill: false,
+            borderWidth: 1.5,
+            tension:0.4
+        },
+        {
+            label: "New Zealand Actual QoQ",
+            data: [4.0, 4.0, 4.0, 4.0, 3.3, 3.3, 3.3, 2.2, null, null],
+            borderColor: "purple",
+            fill: false,
+            borderWidth: 2.5,
+            tension:0.4
+        },
+        {
+            label: "New Zealand Forecast",
+            data: [4.0, 4.0, 4.0, 4.0, 3.5, 3.5, 3.5, 2.2, 2.2, 2.2],
+            borderColor: "rgb(216, 138, 255)",
+            fill: false,
+            borderWidth: 1.5,
+            tension:0.4
+        },
+        {
+            label: "TARGET",
+            data: [2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0],
+            borderColor: "grey",
+            fill: false,
+            borderWidth: 2.5,
+            tension:0.4
+        }
+    ]
+};
+
+
+
+// Create the Chart
+const ctx = document.getElementById("inflationChart").getContext("2d");
+const inflationChart = new Chart(ctx, {
+type: "line",
+data: data,
+options: {
+    responsive: true,
+    plugins: {
+        legend: {
+            position: 'right',
+            labels: {
+                padding: 25,
+                generateLabels: function(chart) {
+                    // Generate custom labels including "ALL"
+                    const labels = Chart.defaults.plugins.legend.labels.generateLabels(chart);
+                    
+                    // Add the "ALL" label at the beginning
+                    labels.unshift({
+                        text: "ALL",
+                        fillStyle: "black",
+                        hidden: false,
+                        strokeStyle: "black",
+                        lineWidth: 0,
+                        datasetIndex: -1 // Custom value to represent "ALL"
+                    });
+                    
+                    return labels;
+                }
+            },
+            onClick: function(e, legendItem) {
+                // Check if "ALL" was clicked
+                if (legendItem.datasetIndex === -1) {
+                    // Determine if any datasets are currently visible
+                    const allVisible = inflationChart.data.datasets.some(ds => !ds.hidden);
+                    
+                    // Toggle all datasets based on the current visibility status
+                    inflationChart.data.datasets.forEach(ds => {
+                        ds.hidden = allVisible; // Hide all if any are visible, show all otherwise
+                    });
+                    
+                    inflationChart.update();
+                } else {
+                    // Default behavior for individual datasets
+                    const dataset = inflationChart.data.datasets[legendItem.datasetIndex];
+                    dataset.hidden = !dataset.hidden;
+                    inflationChart.update();
+                }
+            }
+        }
+    },
+    scales: {
+        x: {
+            beginAtZero: false,
+            min: 1,
+            ticks: {
+                padding: 20, // Add padding to the x-axis ticks
+                color: 'black', // Set the text color to black (or any dark color)
+                font: {
+                    weight: 'bold' // Make the text bold for a darker appearance
+        }
+            }
+        },
+        y: {
+            beginAtZero: false,
+            max: 5,
+            ticks: {
+                padding: 30, // Add padding to the y-axis ticks
+                color: 'black', // Set the text color to black (or any dark color)
+                font: {
+                    weight: 'bold' // Make the text bold for a darker appearance
+                }
+            }
+        }
+    }
+}
+});   
+
+
+// Function to toggle visibility of all datasets
+function toggleAllDatasets() {
+    const areAllHidden = gdpChart.data.datasets.every(
+        (dataset) => gdpChart.getDatasetMeta(gdpChart.data.datasets.indexOf(dataset)).hidden
+    );
+
+    gdpChart.data.datasets.forEach((dataset, index) => {
+        const meta = gdpChart.getDatasetMeta(index);
+        meta.hidden = areAllHidden ? false : true;
+    });
+
+    gdpChart.update();
+}
+
+// Get elements
+const toggleArrow = document.getElementById('toggleArrow');
+const tablesContainer = document.getElementById('tablesContainer');
+
+// Add click event to toggle the tables and rotate the arrow
+toggleArrow.addEventListener('click', function() {
+    if (tablesContainer.style.display === 'none') {
+        tablesContainer.style.display = 'block';
+        toggleArrow.style.transform = 'rotate(0deg)';
+    } else {
+        tablesContainer.style.display = 'none';
+        toggleArrow.style.transform = 'rotate(180deg)';
+    }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UK Data</title>
+    <script src="js/uk.js" defer></script>
+    <link rel="stylesheet" href="css/proba.css">
+    <style>
+        .positive {
+            color: green;
+        }
+        .negative {
+            color: red;
+        }
+        .arrow {
+            display: inline-block;
+            margin-left: 10px;
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <h2 class="title">UK Fundamentals</h2>
+
+    <!-- Economic Growth Section -->
+   
+<h2 onclick="toggleTable(this)">Economic Growth <span class="arrow">⬇</span></h2>
+<table id="growthTable-uk">
+    <thead>
+        <tr>
+            <td></td>
+            <th>Previous</th>
+            <th>Actual</th>
+            <th>Forecast</th>
+            <th>Difference</th>
+            <th>Next Meeting</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th  onclick="window.open('https://tradingeconomics.com/united-kingdom/gdp-growth', '_blank')">GDP Growth</th>
+            <td><input type="text" id="gdp-previous-uk"></td>
+            <td><input type="text" id="gdp-actual-uk"  oninput="calculateDifference('gdp', 'uk')"></td>
+            <td><input type="text" id="gdp-forecast-uk"  oninput="calculateDifference('gdp', 'uk')"></td>
+            <td id="gdp-difference-uk">0%</td>
+            <td><input type="date" id="gdp-date-uk" oninput="highlightThisWeek('uk', 'gdp')"></td>
+        </tr>
+        <tr>
+            <th onclick="window.open('https://www.forexfactory.com/calendar/836-uk-flash-services-pmi', '_blank')">Services PMI</th>
+            <td><input type="text" id="pmi-services-previous-uk" value="52,4"></td>
+            <td><input type="text" id="pmi-services-actual-uk" value="51,8" oninput="calculateDifference('pmi-services', 'uk')"></td>
+            <td><input type="text" id="pmi-services-forecast-uk" value="52,3" oninput="calculateDifference('pmi-services', 'uk')"></td>
+            <td id="pmi-services-difference-uk">-0,5</td>
+            <td><input type="date" id="pmi-services-date-uk" value="2024-11-22" oninput="highlightThisWeek('uk', 'pmi-services')"></td>
+        </tr>
+        <tr>
+            <th  onclick="window.open('https://www.forexfactory.com/calendar/837-uk-flash-manufacturing-pmi', '_blank')">Manufacturing PMI</td>
+            <td><input type="text" id="pmi-manufacturing-previous-uk" value="51,5"></td>
+            <td><input type="text" id="pmi-manufacturing-actual-uk" value="50,3" oninput="calculateDifference('pmi-manufacturing', 'uk')"></td>
+            <td><input type="text" id="pmi-manufacturing-forecast-uk" value="51,5" oninput="calculateDifference('pmi-manufacturing', 'uk')"></td>
+            <td id="pmi-manufacturing-difference-uk">-1,2</td>
+            <td><input type="date" id="pmi-manufacturing-date-uk" value="2024-11-22" oninput="highlightThisWeek('uk', 'pmi-manufacturing')"></td>
+        </tr>
+        <tr>
+            <th  onclick="window.open('https://www.forexfactory.com/calendar/105-uk-retail-sales-mm', '_blank')">Retail Sales</td>
+            <td><input type="text" id="retail-sales-previous-uk" value="1,0%"></td>
+            <td><input type="text" id="retail-sales-actual-uk" value="0,3%" oninput="calculateDifference('retail-sales', 'uk')"></td>
+            <td><input type="text" id="retail-sales-forecast-uk" value="-0,4%" oninput="calculateDifference('retail-sales', 'uk')"></td>
+            <td id="retail-sales-difference-uk">0,7</td>
+            <td><input type="date" id="retail-sales-date-uk" value="2024-11-15" oninput="highlightThisWeek('uk', 'retail-sales')"></td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- Labour Market Section -->
+<h2 onclick="toggleTable(this)">Labour Market<span class="arrow">⬇</span></h2>
+<table id="labourTable-uk">
+    <thead>
+        <tr>
+            <td></td>
+            <th>Previous</th>
+            <th>Actual</th>
+            <th>Forecast</th>
+            <th>Difference</th>
+            <th>Next Meeting</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th  onclick="window.open('https://www.forexfactory.com/calendar/68-uk-claimant-count-change', '_blank')">Claimant Count Change</th>
+            <td><input type="text" id="claimant-previous-uk" value="23,7"></td>
+            <td><input type="text" id="claimant-actual-uk" value="27,90" oninput="calculateDifference('claimant', 'uk')"></td>
+            <td><input type="text" id="claimant-forecast-uk" value="20,20" oninput="calculateDifference('claimant', 'uk')"></td>
+            <td id="claimant-difference-uk"></td>
+            <td><input type="date" id="claimant-date-uk" value="2024-11-12" oninput="highlightThisWeek('uk', 'claimant')"></td>
+        </tr>
+        <tr>
+            <th  onclick="window.open('https://tradingeconomics.com/united-kingdom/unemployment-rate', '_blank')">Unemployment Rate</th>
+            <td><input type="text" id="unemployment-previous-uk" value="4.1%"></td>
+            <td><input type="text" id="unemployment-actual-uk" value="4,0%" oninput="calculateDifference('unemployment', 'uk')"></td>
+            <td><input type="text" id="unemployment-forecast-uk" value="4,1%" oninput="calculateDifference('unemployment', 'uk')"></td>
+            <td id="unemployment-difference-uk"></td>
+            <td><input type="date" id="unemployment-date-uk" value="2024-11-12" oninput="highlightThisWeek('uk', 'unemployment')"></td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- Inflation Data Section -->
+<h2 onclick="toggleTable(this)">Inflation Data <span class="arrow">⬇</span></h2>
+<table id="inflationTable-uk">
+    <thead>
+        <tr>
+            <td></td>
+            <th>Previous</th>
+            <th>Actual</th>
+            <th>Forecast</th>
+            <th>Difference</th>
+            <th>Next Meeting</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th  onclick="window.open('https://tradingeconomics.com/united-kingdom/inflation-cpi', '_blank')">CPI YoY</td>
+            <td><input type="text" id="cpi-yoy-previous-uk" value="2,20%"></td>
+            <td><input type="text" id="cpi-yoy-actual-uk" value="1,7%" oninput="calculateDifference('cpi-yoy', 'uk')"></td>
+            <td><input type="text" id="cpi-yoy-forecast-uk" value="1,9%" oninput="calculateDifference('cpi-yoy', 'uk')"></td>
+            <td id="cpi-yoy-difference-uk"></td>
+            <td><input type="date" id="cpi-yoy-date-uk" value="2024-11-20" oninput="highlightThisWeek('uk', 'cpi-yoy')"></td>
+        </tr>
+        <tr>
+            <th  onclick="window.open('https://tradingeconomics.com/united-kingdom/inflation-rate-mom', '_blank')">CPI MoM</th>
+            <td><input type="text" id="cpi-mom-previous-uk" value="0,3%"></td>
+            <td><input type="text" id="cpi-mom-actual-uk" value="0,0%" oninput="calculateDifference('cpi-mom', 'uk')"></td>
+            <td><input type="text" id="cpi-mom-forecast-uk" value="0,1%" oninput="calculateDifference('cpi-mom', 'uk')"></td>
+            <td id="cpi-mom-difference-uk">-0,1%</td>
+            <td><input type="date" id="cpi-mom-date-uk" value="2024-11-20" oninput="highlightThisWeek('uk', 'cpi-mom')"></td>
+        </tr>
+        <tr>
+            <th>Interest Rate</th>
+            <td><input type="text" id="interest-previous-uk" value="4,0%"></td>
+            <td><input type="text" id="interest-actual-uk" value="4,2%" oninput="calculateDifference('interest', 'uk')"></td>
+            <td><input type="text" id="interest-forecast-uk" value="4,0%" oninput="calculateDifference('interest', 'uk')"></td>
+            <td id="interest-difference-uk">0,2%</td>
+            <td><input type="date" id="interest-date-uk" value="2024-11-14" oninput="highlightThisWeek('uk', 'interest')"></td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="section-title">
+    <button class="save-button" onclick="saveEconomicData()">Save Data</button>
+</div>
+
+<div class="drzave">
+    <button onclick="window.location.href='us.html'" class="america-btn"><img class="drzave-slike" src="slike/united-states.png" alt=""></button>
+    <p class="tekst america">America</p>
+    
+    <button class="europe-btn" onclick="window.location.href='eu.html'"><img class="drzave-slike" src="slike/european-union.png" alt=""></button>
+    <p class="tekst europe">Europe</p>
+    
+    <button class="japan-btn" onclick="window.location.href='japan.html'"><img class="drzave-slike" src="slike/japan.png" alt=""></button>
+    <p class="tekst japan">Japan</p>
+    
+    <button id="current-page" class="uk-btn" onclick="window.location.href='uk.html'"><img class="drzave-slike" src="slike/united-kingdom.png" alt=""></button>
+    <p class="tekst uk">United Kingdom</p>
+    
+    <button class="swiss-btn" onclick="window.location.href='swiss.html'"> <img class="drzave-slike" src="slike/switzerland.png" alt=""></button>
+    <p class="tekst swiss">Switzerland</p>
+    
+    <button class="australia-btn" onclick="window.location.href='australia.html'"><img class="drzave-slike" src="slike/australia.png" alt=""></button>
+    <p class="tekst australia">Australia</p>
+    
+    <button class="newzealand-btn" onclick="window.location.href='newzealand.html'"> <img class="drzave-slike" src="slike/new-zealand.png" alt=""></button>
+    <p class="tekst newzealand">New Zealand</p>
+
+    <button class="chart-btn" onclick="window.location.href='charts-proba.html'"> <img class="drzave-slike" src="slike/database.png" alt=""></button>
+        <p class="tekst chart">Chart</p>
+    
+</div>
+
+
+</body>
+</html>

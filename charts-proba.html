@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Economic Data</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Include Chart.js -->
+<script src="js/us.js"></script>
+<script src="js/eu.js"></script>
+<script src="js/uk.js"></script>
+<script src="js/japan.js"></script>
+<script src="js/newzealand.js"></script>
+<script src="js/australia.js"></script>
+<script src="js/swiss.js"></script>
+
+
+<style>
+
+.drzave {
+    position: fixed;
+    bottom: 20px;
+    left: 40%;
+    display: flex;
+    gap: 15px; /* Space between buttons */
+    transition: transform 0.2s, box-shadow 0.2s; /* Smooth zoom and shadow transition */
+}
+
+.drzave button {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 1px solid gray;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.drzave button:hover {
+    transform: scale(1.1); /* Zoom effect */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3); /* Shadow effect */
+    cursor: pointer;
+}
+
+.drzave-slike {
+    width: 40px;
+    height: 40px;
+}
+
+.tekst{
+    opacity: 0;
+    position: fixed;
+    background-color: gainsboro;
+    border-radius: 50%;
+    bottom: 60px;
+}
+
+
+.europe{
+    left: 43.3%;
+}
+
+.europe-btn:hover + .europe {
+    opacity: 1; /* Prikazujemo tekst kad korisnik hoveruje preko slike */
+}
+
+.america{
+    left: 39.7%;
+}
+
+.america-btn:hover + .america {
+    opacity: 1; /* Prikazujemo tekst kad korisnik hoveruje preko slike */
+}
+
+.japan{
+    left: 46.8%;
+}
+
+.japan-btn:hover + .japan {
+    opacity: 1; /* Prikazujemo tekst kad korisnik hoveruje preko slike */
+}
+
+.uk{
+    left: 48.5%;
+}
+
+.uk-btn:hover + .uk {
+    opacity: 1; /* Prikazujemo tekst kad korisnik hoveruje preko slike */
+}
+
+.swiss{
+    left: 53%;
+}
+
+.swiss-btn:hover + .swiss {
+    opacity: 1; /* Prikazujemo tekst kad korisnik hoveruje preko slike */
+}
+
+
+.australia{
+    left: 56.5%;
+}
+
+.australia-btn:hover + .australia {
+    opacity: 1; /* Prikazujemo tekst kad korisnik hoveruje preko slike */
+}
+
+.newzealand{
+    left: 59%;
+}
+
+.newzealand-btn:hover + .newzealand {
+    opacity: 1; /* Prikazujemo tekst kad korisnik hoveruje preko slike */
+}
+
+.inflation{
+    left: 63.5%;
+}
+
+.inflation-btn:hover + .inflation {
+    opacity: 1; /* Prikazujemo tekst kad korisnik hoveruje preko slike */
+}
+
+#current-page {
+    box-shadow: 0px 6px 3px rgba(255, 61, 61, 0.3);
+
+}
+
+.chart{
+    left: 64%;
+}
+
+.chart-btn:hover + .chart {
+    opacity: 1; /* Prikazujemo tekst kad korisnik hoveruje preko slike */
+}
+
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: whitesmoke;
+}
+
+h2 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: white;
+    margin: 0;
+    padding: 10px 20px;
+    border-bottom: 1px solid #ccc;
+    z-index: 10;
+}
+
+#chartContainer {
+    width: 1000px;
+    position: absolute;
+    left: 25%;
+    top: 39%;
+}
+
+
+canvas {
+    border: 1px solid #ccc;
+    background-color: wheat;
+    transition: transform 0.3s ease;
+}
+
+canvas:hover {
+  transform: scale(1.1); /* Adjust scale factor as needed */
+}
+
+
+.legend {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.legend-item {
+    margin: 0 10px;
+    cursor: pointer;
+}
+
+table {
+    height: 100px;
+    margin: 50px auto;
+    border-collapse: collapse;
+    text-align: center;
+    background-color: wheat;
+    font-weight: bold;
+}
+
+th, td {
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+</style>
+
+<script>
+window.onload = function() {
+    createChart();
+    const ukData = JSON.parse(localStorage.getItem('ukEconomicData'));
+    const euData = JSON.parse(localStorage.getItem('euEconomicData'));
+    const usData = JSON.parse(localStorage.getItem('usEconomicData'));
+    const jpData = JSON.parse(localStorage.getItem('jpEconomicData'));
+    const nzData = JSON.parse(localStorage.getItem('nzEconomicData'));
+    const auData = JSON.parse(localStorage.getItem('auEconomicData'));
+    const swData = JSON.parse(localStorage.getItem('swEconomicData'));
+
+if (euData) {
+    document.getElementById('gdp-actual-eu').textContent = euData.gdp.actual;
+    document.getElementById('gdp-forecast-eu').textContent = euData.gdp.forecast;
+    document.getElementById('cpi-actual-eu').textContent = euData.inflation.actual;
+    document.getElementById('cpi-forecast-eu').textContent = euData.inflation.forecast;
+    document.getElementById('interest-actual-eu').textContent = euData.interest.actual;
+    document.getElementById('interest-forecast-eu').textContent = euData.interest.forecast;
+
+    console.log("GDP Actual: ", euData.gdp.actual);
+    console.log("Inflation Actual: ", euData.inflation.actual);
+    console.log("Interest Rate Actual: ", euData.interest.actual);
+
+    
+} else {
+    console.error("EU Economic Data not found in localStorage.");
+}
+
+if (jpData) {
+    document.getElementById('gdp-actual-jp').textContent = jpData.gdp.actual || "N/A";
+    document.getElementById('gdp-forecast-jp').textContent = jpData.gdp.forecast || "N/A";
+    document.getElementById('cpi-yoy-actual-jp').textContent = jpData.cpiYoY.actual || "N/A";
+    document.getElementById('cpi-yoy-forecast-jp').textContent = jpData.cpiYoY.forecast || "N/A";
+    document.getElementById('interest-actual-jp').textContent = jpData.interest.actual || "N/A";
+    document.getElementById('interest-forecast-jp').textContent = jpData.interest.forecast || "N/A";
+    
+} else {
+    console.error("US Economic Data not found in localStorage.");
+}
+
+if (usData) {
+        document.getElementById('gdp-actual-us').textContent = usData.gdp.actual || "N/A";
+        document.getElementById('gdp-forecast-us').textContent = usData.gdp.forecast || "N/A";
+        document.getElementById('cpi-actual-us').textContent = usData.inflation.actual || "N/A";
+        document.getElementById('cpi-forecast-us').textContent = usData.inflation.forecast || "N/A";
+        document.getElementById('interest-actual-us').textContent = usData.interest.actual || "N/A";
+        document.getElementById('interest-forecast-us').textContent = usData.interest.forecast || "N/A";
+        
+    } else {
+    console.error("US Economic Data not found in localStorage.");
+    }
+
+if (ukData) {
+    document.getElementById('uk-gdp-actual').textContent = ukData.gdp.actual || "N/A";
+    document.getElementById('uk-gdp-forecast').textContent = ukData.gdp.forecast || "N/A";
+    document.getElementById('uk-cpi-yoy-actual').textContent = ukData.cpiYoY.actual || "N/A";
+    document.getElementById('uk-cpi-yoy-forecast').textContent = ukData.cpiYoY.forecast || "N/A";
+    document.getElementById('uk-interest-actual').textContent = ukData.interest.actual || "N/A";
+    document.getElementById('uk-interest-forecast').textContent = ukData.interest.forecast || "N/A";
+
+    
+} else {
+    console.error("EU Economic Data not found in localStorage.");
+}
+
+if (nzData) {
+        document.getElementById('gdp-actual-nz').textContent = nzData.gdp.actual || "N/A";
+        document.getElementById('gdp-forecast-nz').textContent = nzData.gdp.forecast || "N/A";  
+        document.getElementById('cpi-yoy-actual-nz').textContent = nzData.cpiYoY.actual;
+        document.getElementById('cpi-yoy-forecast-nz').textContent = nzData.cpiYoY.forecast;
+        document.getElementById('interest-actual-nz').textContent = nzData.interest.actual || "N/A";
+        document.getElementById('interest-forecast-nz').textContent = nzData.interest.forecast || "N/A";
+        
+    } else {
+        console.error("No NZ economic data found in localStorage.");
+    }
+
+    if (auData) {
+        document.getElementById('gdp-actual-au').textContent = auData.gdp.actual || "N/A";
+        document.getElementById('gdp-forecast-au').textContent = auData.gdp.forecast || "N/A";
+        document.getElementById('cpi-yoy-actual-au').textContent = auData.cpiYoY.actual || "N/A";
+        document.getElementById('cpi-yoy-forecast-au').textContent = auData.cpiYoY.forecast || "N/A";
+        document.getElementById('interest-actual-au').textContent = auData.cpiYoY.actual || "N/A";
+        document.getElementById('interest-forecast-au').textContent = auData.cpiYoY.forecast || "N/A";
+    } else {
+        console.error("No NZ economic data found in localStorage.");
+    }
+    if (swData) {
+        document.getElementById('gdp-actual-sw').textContent = swData.gdp.actual || "N/A";
+        document.getElementById('gdp-forecast-sw').textContent = swData.gdp.forecast || "N/A";
+        document.getElementById('cpi-yoy-actual-sw').textContent = swData.cpiYoY.actual || "N/A";
+        document.getElementById('cpi-yoy-forecast-sw').textContent = swData.cpiYoY.forecast || "N/A";
+        document.getElementById('interest-actual-sw').textContent = swData.cpiYoY.actual || "N/A";
+        document.getElementById('interest-forecast-sw').textContent = swData.cpiYoY.forecast || "N/A";
+    } else {
+        console.error("No NZ economic data found in localStorage.");
+    }
+
+
+
+
+
+};
+
+function createChart() {
+    const euData = JSON.parse(localStorage.getItem('euEconomicData')) || {};
+    const ukData = JSON.parse(localStorage.getItem('ukEconomicData')) || {};
+    const usData = JSON.parse(localStorage.getItem('usEconomicData')) || {};
+    const jpData = JSON.parse(localStorage.getItem('jpEconomicData')) || {};
+    const nzData = JSON.parse(localStorage.getItem('nzEconomicData')) || {};
+    const auData = JSON.parse(localStorage.getItem('auEconomicData')) || {};
+    const swData = JSON.parse(localStorage.getItem('swEconomicData')) || {};
+
+    const labels = ['GDP Actual', 'GDP Forecast', 'Inflation Actual', 'Inflation Forecast', 'Interest Rate Actual', 'Interest Rate Forecast'];
+    const euValues = [
+        parseFloat(euData.gdp?.actual) || 0,
+        parseFloat(euData.gdp?.forecast) || 0,
+        parseFloat(euData.inflation?.actual) || 0,
+        parseFloat(euData.inflation?.forecast) || 0,
+        parseFloat(euData.interest?.actual) || 0,
+        parseFloat(euData.interest?.forecast) || 0
+    ];
+    const ukValues = [
+        parseFloat(ukData.gdp?.actual) || 0,
+        parseFloat(ukData.gdp?.forecast) || 0,
+        parseFloat(ukData.cpiYoY?.actual) || 0,
+        parseFloat(ukData.cpiYoY?.forecast) || 0,
+        parseFloat(ukData.interest?.actual) || 0,
+        parseFloat(ukData.interest?.forecast) || 0
+    ];
+    const usValues = [
+        parseFloat(usData.gdp?.actual) || 0,
+        parseFloat(usData.gdp?.forecast) || 0,
+        parseFloat(usData.inflation?.actual) || 0,
+        parseFloat(usData.inflation?.forecast) || 0,
+        parseFloat(usData.interest?.actual) || 0,
+        parseFloat(usData.interest?.forecast) || 0
+    ];
+    const jpValues = [
+        parseFloat(jpData.gdp?.actual) || 0,
+        parseFloat(jpData.gdp?.forecast) || 0,
+        parseFloat(jpData.cpiYoY?.actual) || 0,
+        parseFloat(jpData.cpiYoY?.forecast) || 0,
+        parseFloat(jpData.interest?.actual) || 0,
+        parseFloat(jpData.interest?.forecast) || 0
+    ];
+    const nzValues = [
+        parseFloat(nzData.gdp?.actual) || 0,
+        parseFloat(nzData.gdp?.forecast) || 0,
+        parseFloat(nzData.cpiYoY?.actual) || 0,
+        parseFloat(nzData.cpiYoY?.forecast) || 0,
+        parseFloat(nzData.interest?.actual) || 0,
+        parseFloat(nzData.interest?.forecast) || 0
+    ];
+    const auValues = [
+        parseFloat(auData.gdp?.actual) || 0,
+        parseFloat(auData.gdp?.forecast) || 0,
+        parseFloat(auData.cpiYoY?.actual) || 0,
+        parseFloat(auData.cpiYoY?.forecast) || 0,
+        parseFloat(auData.interest?.actual) || 0,
+        parseFloat(auData.interest?.forecast) || 0
+    ];
+    const swValues = [
+        parseFloat(swData.gdp?.actual) || 0,
+        parseFloat(swData.gdp?.forecast) || 0,
+        parseFloat(swData.cpiYoY?.actual) || 0,
+        parseFloat(swData.cpiYoY?.forecast) || 0,
+        parseFloat(swData.interest?.actual) || 0,
+        parseFloat(swData.interest?.forecast) || 0
+    ];
+    
+
+    const ctx = document.getElementById('economicChart').getContext('2d');
+    const economicChart = new Chart(ctx, {
+        width: 1600,
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'EU',
+                data: euValues,
+                backgroundColor: 'rgb(107, 214, 107)',
+                borderColor: 'rgb(0, 204, 0)',
+                borderWidth: 1.5
+            }, {
+                label: 'UK',
+                data: ukValues,
+                backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                borderColor: 'rgba(153, 102, 255, 1)',
+                borderWidth: 1.5
+            },
+            {
+                label: 'US',
+                data: usValues,
+                backgroundColor: 'rgba(176, 19, 19)',
+                borderColor: 'rgba(82, 2, 2)',
+                borderWidth: 1.5
+            },
+            {
+                label: 'JP',
+                data: jpValues,
+                backgroundColor: 'rgba(34, 41, 245)',
+                borderColor: 'rgba(3, 8, 145)',
+                borderWidth: 1.5
+            },
+            {
+                label: 'NZ',
+                data: nzValues,
+                backgroundColor: 'rgba(192, 227, 191)',
+                borderColor: 'rgba(104, 163, 103)',
+                borderWidth: 1.5
+            },
+            {
+                label: 'AU',
+                data: auValues,
+                backgroundColor: 'rgba(119, 201, 200)',
+                borderColor: 'rgba(1, 122, 121)',
+                borderWidth: 1.5
+            },
+            {
+                label: 'SW',
+                data: swValues,
+                backgroundColor: 'rgba(255, 140, 140)',
+                borderColor: 'rgba(156, 58, 58)',
+                borderWidth: 1.5
+            }
+        ]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    // Store the chart instance to access later for toggling
+    window.economicChart = economicChart;
+}
+
+function toggleDataset(country) {
+    const dataset = window.economicChart.data.datasets.find(ds => ds.label === country.toUpperCase());
+    if (dataset) {
+        dataset.hidden = !dataset.hidden;
+        window.economicChart.update();
+    }
+}
+</script>
+</head>
+<body>
+<h2>Economic Data</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Region</th>
+            <th>GDP Actual</th>
+            <th>GDP Forecast</th>
+            <th>Inflation Actual</th>
+            <th>Inflation Forecast</th>
+            <th>Interest Rate Actual</th>
+            <th>Interest Rate Forecast</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>EU</td>
+            <td id="gdp-actual-eu"></td>
+            <td id="gdp-forecast-eu"></td>
+            <td id="cpi-actual-eu"></td>
+            <td id="cpi-forecast-eu"></td>
+            <td id="interest-actual-eu"></td>
+            <td id="interest-forecast-eu"></td>
+        </tr>
+        <tr>
+            <td>US</td>
+            <td id="gdp-actual-us"></td>
+            <td id="gdp-forecast-us"></td>
+            <td id="cpi-actual-us"></td>
+            <td id="cpi-forecast-us"></td>
+            <td id="interest-actual-us"></td>
+            <td id="interest-forecast-us"></td>
+        </tr>
+        <tr>
+            <td>UK</td>
+            <td id="uk-gdp-actual"></td>
+            <td id="uk-gdp-forecast"></td>
+            <td id="uk-cpi-yoy-actual"></td>
+            <td id="uk-cpi-yoy-forecast"></td>
+            <td id="uk-interest-actual"></td>
+            <td id="uk-interest-forecast"></td>
+        </tr>
+        <tr>
+            <td>Japan</td>
+            <td id="gdp-actual-jp"></td>
+            <td id="gdp-forecast-jp"></td>
+            <td id="cpi-yoy-actual-jp"></td>
+            <td id="cpi-yoy-forecast-jp"></td>
+            <td id="interest-actual-jp"></td>
+            <td id="interest-forecast-jp"></td>
+        </tr>
+        <tr>
+            <td>New Zealand</td>
+            <td id="gdp-actual-nz"></td>
+            <td id="gdp-forecast-nz"></td>
+            <td id="cpi-yoy-actual-nz"></td>
+            <td id="cpi-yoy-forecast-nz"></td>
+            <td id="interest-actual-nz"></td>
+            <td id="interest-forecast-nz"></td>
+        </tr>
+        <tr>
+            <td>Australia</td>
+            <td id="gdp-actual-au"></td>
+            <td id="gdp-forecast-au"></td>
+            <td id="cpi-yoy-actual-au"></td>
+            <td id="cpi-yoy-forecast-au"></td>
+            <td id="interest-actual-au"></td>
+            <td id="interest-forecast-au"></td>
+        </tr>
+        <tr>
+            <td>Switzerland</td>
+            <td id="gdp-actual-sw"></td>
+            <td id="gdp-forecast-sw"></td>
+            <td id="cpi-yoy-actual-sw"></td>
+            <td id="cpi-yoy-forecast-sw"></td>
+            <td id="interest-actual-sw"></td>
+            <td id="interest-forecast-sw"></td>
+        </tr>
+    </tbody>
+</table>
+
+    <div id="chartContainer">
+        <canvas id="economicChart"></canvas>
+    </div>
+
+
+    <div class="drzave">
+        <button onclick="window.location.href='us.html'" class="america-btn"><img class="drzave-slike" src="slike/united-states.png" alt=""></button>
+        <p class="tekst america">America</p>
+        
+        <button class="europe-btn" onclick="window.location.href='eu.html'"><img class="drzave-slike" src="slike/european-union.png" alt=""></button>
+        <p class="tekst europe">Europe</p>
+        
+        <button class="japan-btn" onclick="window.location.href='japan.html'"><img class="drzave-slike" src="slike/japan.png" alt=""></button>
+        <p class="tekst japan">Japan</p>
+        
+        <button class="uk-btn" onclick="window.location.href='uk.html'"><img class="drzave-slike" src="slike/united-kingdom.png" alt=""></button>
+        <p class="tekst uk">United Kingdom</p>
+        
+        <button class="swiss-btn" onclick="window.location.href='swiss.html'"> <img class="drzave-slike" src="slike/switzerland.png" alt=""></button>
+        <p class="tekst swiss">Switzerland</p>
+        
+        <button class="australia-btn" onclick="window.location.href='australia.html'"><img class="drzave-slike" src="slike/australia.png" alt=""></button>
+        <p class="tekst australia">Australia</p>
+        
+        <button class="newzealand-btn" onclick="window.location.href='newzealand.html'"> <img class="drzave-slike" src="slike/new-zealand.png" alt=""></button>
+        <p class="tekst newzealand">New Zealand</p>
+        
+        <button class="inflation-btn" onclick="window.location.href='inflation.html'"> <img class="drzave-slike" src="slike/grocery.png" alt=""></button>
+        <p class="tekst inflation">Inflation</p>
+    </div>
+
+</body>
+</html>
